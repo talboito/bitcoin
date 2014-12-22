@@ -236,14 +236,12 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime    = 1231006505;
+        genesis.nTime    = 1419222590;
         genesis.nBits    = 0x1d00ffff;
         genesis.nNonce   = 2083236893;
 
         hashGenesisBlock = genesis.GetHash();
 
-        LogPrintf("Unable to hansasdfasdfas: %s, %s", genesis.ToString(), hashGenesisBlock.ToString());
-        
         assert(hashGenesisBlock ==
 uint256("0xb55b809765f252948ebaa8ced07544b07169894d129352b08dace092f2b6a8ba"));
         assert(genesis.hashMerkleRoot == uint256("0x0a8cac30d090523a1641977f4c22f24e66666c3892ffba8e8eeea3d21d9a4ac1"));
