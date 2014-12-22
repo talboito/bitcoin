@@ -17,6 +17,7 @@ class CBaseChainParams
 public:
     enum Network {
         MAIN,
+        LOCA,
         TESTNET,
         REGTEST,
         UNITTEST,

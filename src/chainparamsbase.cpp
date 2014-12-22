@@ -28,6 +28,20 @@ public:
 static CBaseMainParams mainParams;
 
 /**
+ * Loca network
+ */
+class CBaseLocaParams : public CBaseChainParams
+{
+public:
+    CBaseLocaParams()
+    {
+        networkID = CBaseChainParams::LOCA;
+        nRPCPort = 9332;
+    }
+};
+static CBaseLocaParams locaParams;
+
+/**
  * Testnet (v3)
  */
 class CBaseTestNetParams : public CBaseMainParams
@@ -84,6 +98,9 @@ void SelectBaseParams(CBaseChainParams::Network network)
     case CBaseChainParams::MAIN:
         pCurrentBaseParams = &mainParams;
         break;
+    case CBaseChainParams::LOCA:
+        pCurrentBaseParams = &locaParams;
+        break;
     case CBaseChainParams::TESTNET:
         pCurrentBaseParams = &testNetParams;
         break;
@@ -103,6 +120,7 @@ CBaseChainParams::Network NetworkIdFromCommandLine()
 {
     bool fRegTest = GetBoolArg("-regtest", false);
     bool fTestNet = GetBoolArg("-testnet", false);
+    bool fLocaNet = GetBoolArg("-loca", false);
 
     if (fTestNet && fRegTest)
         return CBaseChainParams::MAX_NETWORK_TYPES;
@@ -110,7 +128,10 @@ CBaseChainParams::Network NetworkIdFromCommandLine()
         return CBaseChainParams::REGTEST;
     if (fTestNet)
         return CBaseChainParams::TESTNET;
-    return CBaseChainParams::MAIN;
+    if (fLocaNet)
+       return CBaseChainParams::LOCA;
+    // fallthrough
+    return CBaseChainParams::LOCA;
 }
 
 bool SelectBaseParamsFromCommandLine()

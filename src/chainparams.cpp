@@ -76,6 +76,17 @@ static const Checkpoints::CCheckpointData data = {
         60000.0     // * estimated number of transactions per day after checkpoint
     };
 
+static Checkpoints::MapCheckpoints mapCheckpointsLocatest =
+        boost::assign::map_list_of
+        ( 0, uint256("0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"))
+        ;
+static const Checkpoints::CCheckpointData dataLocatest = {
+        &mapCheckpointsLocatest,
+        0,
+        0,
+        0
+    };
+
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
         boost::assign::map_list_of
         ( 546, uint256("000000002a936ca763904c3c35fce2f3556c559c0214345d31b1bcebf76acb70"))
@@ -183,6 +194,85 @@ public:
     }
 };
 static CMainParams mainParams;
+
+class CLocaParams : public CChainParams {
+public:
+    CLocaParams() {
+        networkID = CBaseChainParams::LOCA;
+        strNetworkID = "loca";
+        /** 
+         * The message start string is designed to be unlikely to occur in normal data.
+         * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
+         * a large 4-byte int at any alignment.
+         */
+        pchMessageStart[0] = 0xf9;
+        pchMessageStart[1] = 0xbe;
+        pchMessageStart[2] = 0xb4;
+        pchMessageStart[3] = 0xd9;
+        vAlertPubKey = ParseHex("04fc9702847840aaf195de8442ebecedf5b095cdbb9bc716bda9110971b28a49e0ead8564ff0db22209e0374782c093bb899692d524e9d6a6956e7c5ecbcd68284");
+        nDefaultPort = 9333;
+        bnProofOfWorkLimit = ~uint256(0) >> 32;
+        nSubsidyHalvingInterval = 210000;
+        nEnforceBlockUpgradeMajority = 750;
+        nRejectBlockOutdatedMajority = 950;
+        nToCheckBlockUpgradeMajority = 1000;
+        nMinerThreads = 1;
+        nTargetTimespan = 14 * 24 * 60 * 60; // two weeks
+        nTargetSpacing = 10 * 60;
+
+        /**
+         * Build the genesis block. Note that the output of the genesis coinbase cannot
+         * be spent as it did not originally exist in the database.
+         * 
+         */
+        const char* pszTimestamp = "Corrections: December 21, 2014...An article last Sunday about coaching changes among the top female tennis players misspelled the surname of Simona Halep’s former coach. He is Wim Fissette, not Fisette.";
+        CMutableTransaction txNew;
+        txNew.vin.resize(1);
+        txNew.vout.resize(1);
+        txNew.vin[0].scriptSig = CScript() << 486604799 << CScriptNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+        txNew.vout[0].nValue = 50 * COIN;
+        txNew.vout[0].scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
+        genesis.vtx.push_back(txNew);
+        genesis.hashPrevBlock = 0;
+        genesis.hashMerkleRoot = genesis.BuildMerkleTree();
+        genesis.nVersion = 1;
+        genesis.nTime    = 1231006505;
+        genesis.nBits    = 0x1d00ffff;
+        genesis.nNonce   = 2083236893;
+
+        hashGenesisBlock = genesis.GetHash();
+
+        LogPrintf("Unable to hansasdfasdfas: %s, %s", genesis.ToString(), hashGenesisBlock.ToString());
+        
+        assert(hashGenesisBlock ==
+uint256("0xb55b809765f252948ebaa8ced07544b07169894d129352b08dace092f2b6a8ba"));
+        assert(genesis.hashMerkleRoot == uint256("0x0a8cac30d090523a1641977f4c22f24e66666c3892ffba8e8eeea3d21d9a4ac1"));
+
+        // No public seeds
+
+        base58Prefixes[PUBKEY_ADDRESS] = list_of(0);
+        base58Prefixes[SCRIPT_ADDRESS] = list_of(5);
+        base58Prefixes[SECRET_KEY] =     list_of(128);
+        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x88)(0xB2)(0x1E);
+        base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x88)(0xAD)(0xE4);
+
+        fRequireRPCPassword = true;
+        fMiningRequiresPeers = false;
+        fDefaultCheckMemPool = false;
+        fAllowMinDifficultyBlocks = false;
+        fRequireStandard = true;
+        fMineBlocksOnDemand = false;
+        fSkipProofOfWorkCheck = true;
+        fTestnetToBeDeprecatedFieldRPC = false;
+    }
+
+    const Checkpoints::CCheckpointData& Checkpoints() const 
+    {
+        return data;
+    }
+};
+static CLocaParams locaParams;
+
 
 /**
  * Testnet (v3)
@@ -341,6 +431,8 @@ CChainParams &Params(CBaseChainParams::Network network) {
     switch (network) {
         case CBaseChainParams::MAIN:
             return mainParams;
+        case CBaseChainParams::LOCA:
+            return locaParams;
         case CBaseChainParams::TESTNET:
             return testNetParams;
         case CBaseChainParams::REGTEST:
