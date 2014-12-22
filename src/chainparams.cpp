@@ -241,10 +241,14 @@ public:
         genesis.nNonce   = 2083236893;
 
         hashGenesisBlock = genesis.GetHash();
+        expectedHashGenesisBlock = uint256("0xb6ddd7bca14c00a54d95f7bb8fbf1593abd06ae213f7ef055782a52c7bafa8be");
+        expectedHashMerkleRoot = uint256("0x0a8cac30d090523a1641977f4c22f24e66666c3892ffba8e8eeea3d21d9a4ac1");
 
-        assert(hashGenesisBlock ==
-uint256("0xb55b809765f252948ebaa8ced07544b07169894d129352b08dace092f2b6a8ba"));
-        assert(genesis.hashMerkleRoot == uint256("0x0a8cac30d090523a1641977f4c22f24e66666c3892ffba8e8eeea3d21d9a4ac1"));
+        LogPrintf("Unable to properly unfortunate: %s, %s, %s, %s", genesis.ToString(), hashGenesisBlock.ToString(),
+                  expectedHashGenesisBlock.ToString(),
+                  expectedHashMerkleRoot.ToString());
+        assert(hashGenesisBlock == expectedHashGenesisBlock);
+        assert(genesis.hashMerkleRoot == expectedHashMerkleRoot);
 
         // No public seeds
 

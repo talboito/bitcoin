@@ -83,6 +83,8 @@ protected:
     CChainParams() {}
 
     uint256 hashGenesisBlock;
+    uint256 expectedHashGenesisBlock;
+    uint256 expectedHashMerkleRoot;
     MessageStartChars pchMessageStart;
     //! Raw pub key bytes for the broadcast alert signing key.
     std::vector<unsigned char> vAlertPubKey;
